@@ -1,0 +1,44 @@
+version: "2"
+  
+services:
+  nginx:
+    restart: always
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/etc/nginx/conf.d"
+      - "/etc/nginx/vhost.d"
+      - "/usr/share/nginx/html"
+      - "./certs:/etc/nginx/certs:ro"
+
+  ssl:
+    restart: always
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: ssl
+    volumes_from:
+      - nginx
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./certs:/etc/nginx/certs:rw"
+
+  jira:
+    image: atlassian/jira-software:8.20
+    container_name: jira
+    restart: always
+    environment:
+      - VIRTUAL_HOST=${domain}
+      - VIRTUAL_PORT=8080
+      - ATL_PROXY_NAME=${domain}
+      - ATL_PROXY_PORT=443
+      - ATL_TOMCAT_SCHEME=https
+      - LETSENCRYPT_HOST=${domain}
+      - LETSENCRYPT_EMAIL=${email}
+    volumes:
+      - jiraVolume:/var/atlassian/application-data/jira
+
+volumes:
+  jiraVolume:
+    external: true

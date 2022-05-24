@@ -1,8 +1,9 @@
 ## Jira Server with SSL
-This docker compose will setup everything to mount a jira sandbox over https and http.
-Tested on a droplet from digital ocean (8gb, 4vcpu, 160gb ssd, ubuntu). Just install docker and docker compose on the instance and run the instructions.
+Jira + Nginx + LetsEncrypt SSL</br>
+
+This docker compose will setup everything to mount a jira sandbox over https and http.</br>
+Tested on a droplet from digital ocean (8gb, 4vcpu, 160gb ssd, ubuntu).</br>Just install docker and docker compose on the instance and run the instructions.
 You will need a domain to add the SSL certificate. You can use this free domains (https://www.freenom.com/)
-Jira Server + Nginx + SSL
 
 ## Instructions
 1. Change the info on .env.local and rename the file to .env
